@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeploymentwithemptydir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mypodforemptydir
+  template:
+    metadata:
+      labels:
+        app: mypodforemptydir
+    spec:
+      containers:
+      - name: myweb
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html
+          name: myemptydirvolume
+      - name: mywork
+        image: alpine
+        command: ["/bin/sh","-c"]
+        args:
+          - while true; do
+              date > /temp/index.html;
+              sleep 1;
+            done
+        volumeMounts:
+        - mountPath: /temp
+          name: myemptydirvolume
+      volumes:
+      - name: myemptydirvolume
+        emptyDir: {}
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: mynodeportservice
+spec:
+  selector:
+    app: mypodforemptydir
+  type: NodePort
+  ports:
+    - protocol: TCP
+      targetPort: 80
+      port: 8080
+      nodePort: 30001

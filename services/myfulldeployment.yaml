@@ -1,0 +1,157 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: myclusteripservice1
+spec:
+  selector:
+    app: mypod1
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 7000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mypod1
+  template:
+    metadata:
+      labels:
+        app: mypod1
+    spec:
+      containers:
+      - name: mycontainer1
+        image: mickaelbaron/simple_nodejs:latest
+        env:
+          - name: CONTEXT
+            value: "First microservice"
+        ports:
+        - containerPort: 7000
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: myclusteripservice2
+spec:
+  selector:
+    app: mypod2
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 7000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment2
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mypod2
+  template:
+    metadata:
+      labels:
+        app: mypod2
+    spec:
+      containers:
+      - name: mycontainer2
+        image: mickaelbaron/simple_nodejs:latest
+        env:
+          - name: CONTEXT
+            value: "Second microservice"
+        ports:
+        - containerPort: 7000
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: myclusteripservice3
+spec:
+  selector:
+    app: mypod3
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 7000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment3
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mypod3
+  template:
+    metadata:
+      labels:
+        app: mypod3
+    spec:
+      containers:
+      - name: mycontainer
+        image: mickaelbaron/simple_nodejs:latest
+        env:
+          - name: CONTEXT
+            value: "Third microservice"
+        ports:
+        - containerPort: 7000
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: myclusteripservice4
+spec:
+  selector:
+    app: mypod4
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 7000
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment4
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mypod4
+  template:
+    metadata:
+      labels:
+        app: mypod4
+    spec:
+      containers:
+      - name: mycontainer
+        image: mickaelbaron/simple_nodejs:latest
+        env:
+          - name: CONTEXT
+            value: "Fourth microservice"
+        ports:
+        - containerPort: 7000

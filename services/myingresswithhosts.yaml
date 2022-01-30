@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myingresswithhosts
+spec:
+  rules:
+    - host: "mydomain.test"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myclusteripservice3
+                port: 
+                  number: 8080
+    - host: "*.mydomain.test"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myclusteripservice4
+                port: 
+                  number: 8080
